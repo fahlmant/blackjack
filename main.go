@@ -68,7 +68,7 @@ func main() {
 		}
 
 		for {
-			fmt.Println("(h)it or (s)tand?")
+			fmt.Printf("(h)it or (s)tand?\n>")
 			var input string
 			fmt.Scanf("%s", &input)
 			if input == "h" {
@@ -111,7 +111,7 @@ func main() {
 		}
 
 		if playerTotal > dealerTotal {
-			fmt.Println("Player has the higher number, player wins")
+			fmt.Println("Player wins")
 			fmt.Println()
 			totalMoney += int(bet)
 			continue
@@ -122,7 +122,7 @@ func main() {
 			continue
 		}
 
-		fmt.Println("Dealer has the higher hand, dealer wins")
+		fmt.Println("Dealer wins")
 		fmt.Println()
 
 		// You get NOTHING! You LOSE! Good DAY sir!
