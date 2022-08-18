@@ -26,6 +26,8 @@ func main() {
 			d.Shuffle()
 		}
 
+		fmt.Println("------------")
+
 		// Set the bet
 		fmt.Printf("Betting 5 dollars out of %d\n", totalMoney)
 		bet := 5.0
@@ -65,11 +67,63 @@ func main() {
 			continue
 		}
 
-		//fmt.Println("(h)it or (s)tand?")
-		//input := bufio.NewScanner(os.Stdin)
+		for {
+			fmt.Println("(h)it or (s)tand?")
+			var input string
+			fmt.Scanf("%s", &input)
+			if input == "h" {
+				playerCards = append(playerCards, d.Draw())
+				printPlayerHand(playerCards)
+				if getHandTotal(playerCards) >= 21 {
+					break
+				}
+
+				continue
+			}
+			if input == "s" {
+				break
+			}
+		}
+
+		playerTotal := getHandTotal(playerCards)
+		printPlayerHand(playerCards)
+
+		if playerTotal > 21 {
+			fmt.Println("Bust!")
+			printDealerHand(dealerCards)
+			totalMoney -= int(bet)
+			continue
+		}
+
+		for getHandTotal(dealerCards) < 17 {
+			dealerCards = append(dealerCards, d.Draw())
+		}
+
+		dealerTotal := getHandTotal(dealerCards)
+		printDealerHand(dealerCards)
+		fmt.Println()
+
+		if dealerTotal > 21 {
+			fmt.Println("Dealer busts")
+			fmt.Println()
+			totalMoney += int(bet)
+			continue
+		}
+
+		if playerTotal > dealerTotal {
+			fmt.Println("Player has the higher number, player wins")
+			fmt.Println()
+			totalMoney += int(bet)
+			continue
+		}
+		if playerTotal == dealerTotal {
+			fmt.Println("Push")
+			fmt.Println()
+			continue
+		}
 
 		// You get NOTHING! You LOSE! Good DAY sir!
-		totalMoney -= 5
+		totalMoney -= int(bet)
 		fmt.Printf("Press enter to deal new hand\n")
 		input := bufio.NewScanner(os.Stdin)
 		input.Scan()
@@ -90,6 +144,11 @@ func printPlayerHand(cards []deck.Card) {
 	printHand("Player", cards)
 	fmt.Printf("for a total of %d\n", getHandTotal(cards))
 
+}
+
+func printDealerHand(cards []deck.Card) {
+	printHand("Dealer", cards)
+	fmt.Printf("for a total of %d\n", getHandTotal(cards))
 }
 
 func printDealerTopCard(cards []deck.Card) {
