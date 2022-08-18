@@ -86,22 +86,22 @@ func main() {
 		}
 
 		playerTotal := getHandTotal(playerCards)
-		printPlayerHand(playerCards)
 
 		if playerTotal > 21 {
 			fmt.Println("Bust!")
-			printDealerHand(dealerCards)
 			totalMoney -= int(bet)
 			continue
 		}
+		fmt.Println("Player stands")
+		printPlayerHand(playerCards)
+		printDealerHand(dealerCards)
 
 		for getHandTotal(dealerCards) < 17 {
 			dealerCards = append(dealerCards, d.Draw())
+			printDealerHand(dealerCards)
 		}
 
 		dealerTotal := getHandTotal(dealerCards)
-		printDealerHand(dealerCards)
-		fmt.Println()
 
 		if dealerTotal > 21 {
 			fmt.Println("Dealer busts")
@@ -121,6 +121,9 @@ func main() {
 			fmt.Println()
 			continue
 		}
+
+		fmt.Println("Dealer has the higher hand, dealer wins")
+		fmt.Println()
 
 		// You get NOTHING! You LOSE! Good DAY sir!
 		totalMoney -= int(bet)
